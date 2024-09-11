@@ -10,4 +10,14 @@ public class DemoController{
     model.addAttribute("data", " 방갑습니다."); // model 설정
     return "hello"; // hello.html 연결
     }
-} 
+ @GetMapping("/hello2") // 새로운 URL 맵핑
+    public String hello2(Model model) {
+        // 5개의 속성 추가
+        model.addAttribute("name", "홍길동.");
+        model.addAttribute("greeting", "방갑습니다.");
+        model.addAttribute("when", "오늘.");
+        model.addAttribute("weather", "날씨는.");
+        model.addAttribute("feel", "매우 좋습니다.");
+        return "hello2"; // hello2.html 연결
+    }
+}
