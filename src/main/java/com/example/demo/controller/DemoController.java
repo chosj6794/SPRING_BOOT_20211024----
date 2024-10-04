@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.example.demo.model.domain.TestDB;
 import com.example.demo.model.service.TestService; // TestService 임포트
+import java.util.List;
+
 
 @Controller // 컨트롤러 어노테이션 명시
 public class DemoController { 
@@ -48,9 +50,8 @@ public class DemoController {
 
     @GetMapping("/testdb")
     public String getAllTestDBs(Model model) {
-        TestDB test = testService.findByName("홍길동"); // 여기서 testService 사용
-        model.addAttribute("data4", test);
-        System.out.println("데이터 출력 디버그 : " + test);
+        List<TestDB> users = testService.findAllUsers(); // 모든 사용자 가져오기
+        model.addAttribute("users", users); // 모델에 사용자 추가
         return "testdb"; // testdb.html 연결
     }
 }
