@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.demo.model.domain.Article;
 import com.example.demo.model.service.AddArticleRequest;
@@ -37,16 +36,20 @@ public class BlogController {
     }
 
     @GetMapping("/article_edit/{id}")
-public String article_edit(Model model, @PathVariable Long id) {
-    Optional<Article> articleOptional = blogService.findById(id);
-    if (articleOptional.isPresent()) {
-        model.addAttribute("article", articleOptional.get());
-    } else {
-        return "error_page/article_error"; // 오류 처리 페이지로 연결
+    public String article_edit(Model model, @PathVariable String id) {
+        try {
+            Long articleId = Long.parseLong(id); // 문자열을 Long으로 변환
+            Optional<Article> articleOptional = blogService.findById(articleId);
+            if (articleOptional.isPresent()) {
+                model.addAttribute("article", articleOptional.get());
+            } else {
+                return "error_page/article_error"; // 존재하지 않는 게시글은 기본 오류 페이지
+            }
+        } catch (NumberFormatException e) {
+            return "error_page/article_error2"; // 문자열 변환 오류 시 새로운 에러 페이지로 연결
+        }
+        return "article_edit"; // .HTML 연결
     }
-    return "article_edit"; // .HTML 연결
-}
-
 
     @PostMapping("/api/article_edit/{id}") // 게시글 수정 요청
     public String updateArticle(@PathVariable Long id, @ModelAttribute AddArticleRequest request) {
