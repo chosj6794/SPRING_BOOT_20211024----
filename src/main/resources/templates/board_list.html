@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>블로그 게시판</title>
+    <title>블로그 게시판(new)</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -10,12 +10,7 @@
     </head>
     <body>
     <div class="container">
-    <h1 class="mt-5">블로그 게시판</h1>
-
-    <!-- 글쓰기 버튼 -->
-    <div class="mt-4">
-        <button class="btn btn-success" data-toggle="modal" data-target="#writeModal">글쓰기</button>
-    </div>
+    <h1 class="mt-5">블로그 게시판(new)</h1>
 
     <!-- 게시글 리스트 -->
     <div class="mt-5">
@@ -25,24 +20,25 @@
                 <tr>
                     <th>ID</th>
                     <th>제목</th>
-                    <th>내용</th>
-                    <th></th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                    <th>좋아요</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="article : ${articles}">
-                    <td th:text="${article.id}"></td>
-                    <td th:text="${article.title}"></td>
-                    <td th:text="${article.content}"></td>
+                <tr th:each="board : ${boards}">
+                    <td th:text="${board.id}"></td>
                     <td>
-                        <!-- 수정 버튼 -->
-                        <a class="btn btn-warning" th:href="@{/article_edit/{id}(id=${article.id})}">수정</a>
-                        <!-- 삭제 버튼 -->
-                        <form th:action="@{/api/article_delete/{id}(id=${article.id})}" method="post" style="display:inline;">
-                            <input type="hidden" name="_method" value="delete">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-                        </form>
+                        <a th:href="@{/board_view/{id}(id=${board.id})}">
+                        <span th:text="${board.title}"></span>
+                        </a>
                     </td>
+                    <td th:text="${board.title}"></td>
+                    <td th:text="${board.user}"></td>
+                    <td th:text="${board.newdate}"></td>
+                    <td th:text="${board.count}"></td>
+                    <td th:text="${board.likec}"></td>
                 </tr>
             </tbody>
         </table>
