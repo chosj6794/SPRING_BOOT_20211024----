@@ -71,9 +71,9 @@ public class BlogController {
     }
     @GetMapping("/board_view/{id}") // 게시판 링크 지정
     public String board_view(Model model, @PathVariable Long id) {
-    Optional<Board> boarOptional = blogService.findById(id); // 선택한 게시판 글
-    if (boarOptional.isPresent()) {
-    model.addAttribute("board", boarOptional.get()); // 존재할 경우 실제 Article 객체를 모델에 추가
+    Optional<Board> boardOptional = blogService.findById(id); // 선택한 게시판 글
+    if (boardOptional.isPresent()) {
+    model.addAttribute("board", boardOptional.get()); // 존재할 경우 실제 Article 객체를 모델에 추가
     model.addAttribute("boards", blogService.findAll()); 
     } else {
     // 처리할 로직 추가 (예: 오류 페이지로 리다이렉트, 예외 처리 등)
@@ -81,4 +81,29 @@ public class BlogController {
     }
     return "board_view"; // .HTML 연결
     }
+    @GetMapping("/board_edit/{id}") // 게시글 수정 페이지
+    public String boardEdit(Model model, @PathVariable Long id) {
+    Optional<Board> boardOptional = blogService.findById(id); // 선택한 게시글
+    if (boardOptional.isPresent()) {
+        model.addAttribute("board", boardOptional.get()); // 게시글 정보를 모델에 추가
+    } else {
+        return "error_page/article_error"; // 오류 처리 페이지로 연결
+    }
+    return "board_edit"; // board_edit.html 연결
+}
+
+@PostMapping("/api/article_edit/{id}") // 게시글 수정 처리
+public String updateArticle(@PathVariable Long id, @ModelAttribute AddArticleRequest request) {
+    Board board = Board.builder() // 빌더 패턴 사용
+            .title(request.getTitle())
+            .content(request.getContent())
+            .user(request.getUser())
+            .newdate(request.getNewdate())
+            .count(request.getCount())
+            .likec(request.getLikec())
+            .build();
+
+    blogService.update(id, board); // 게시글 업데이트
+    return "redirect:/board_list"; // 수정 후 게시글 목록으로 리다이렉트
+}
 }

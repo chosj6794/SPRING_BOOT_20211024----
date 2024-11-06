@@ -32,15 +32,23 @@ public class Board {
     @Column(name = "likec", nullable = false)
     private String likec = "";
 
-    @Builder // 생성자에 빌더 패턴 적용(불변성)
-    public Board(String title, String content) {
+    @Builder // 빌더 패턴 적용
+    public Board(String title, String content, String user, String newdate, String count, String likec) {
         this.title = title;
         this.content = content;
+        this.user = user;
+        this.newdate = newdate;
+        this.count = count;
+        this.likec = likec;
     }
 
     // 현재 객체 상태 업데이트
-    public void update(String title, String content) {
+    public void update(String title, String content, String user, String newdate, String count, String likec) {
         this.title = title; // title을 매개변수로 전달된 값으로 수정
-        this.content = content; // content를 매개변수로 전달된 값으로 수정
-    }
+        this.content = content; // content을 매개변수로 전달된 값으로 수정
+        this.user = user; // user을 매개변수로 전달된 값으로 수정
+        this.newdate = newdate; // newdate을 매개변수로 전달된 값으로 수정
+        this.count = count; // count를 매개변수로 전달된 값으로 수정
+        this.likec = likec; // likec를 매개변수로 전달된 값으로 수정
+    }    
 }

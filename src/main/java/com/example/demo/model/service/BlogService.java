@@ -47,4 +47,24 @@ public class BlogService {
     //public void delete(Long id) { // 게시글 삭제
     //    blogRepository.deleteById(id); // ID로 게시글 삭제
     //}
+    public void update(Long id, Board board) { // 게시글 수정 메서드
+        if (blogRepository.existsById(id)) { // 게시글이 존재하는지 확인
+            Board existingBoard = blogRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+            
+            // 기존 게시글의 필드 업데이트
+            existingBoard.update(board.getTitle(), board.getContent(), 
+                                 board.getUser(), board.getNewdate(), 
+                                 board.getCount(), board.getLikec());
+            
+            blogRepository.save(existingBoard); // 업데이트된 객체 저장
+        } else {
+            throw new RuntimeException("게시글이 존재하지 않습니다."); // 예외 처리
+        }
+    }
+
+    
+    public void deleteById(Long id) { // 게시글 삭제
+        blogRepository.deleteById(id); // ID로 게시글 삭제
+    }
 }
