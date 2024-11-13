@@ -8,8 +8,11 @@ import com.example.demo.model.domain.Article;
 import com.example.demo.model.domain.Board;
 import com.example.demo.model.repository.BlogRepository;
 import com.example.demo.model.repository.BoardRepository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
+
+
 
 @Service
 @RequiredArgsConstructor // 생성자 자동 생성
@@ -64,7 +67,23 @@ public class BlogService {
     }
 
     
-    public void deleteById(Long id) { // 게시글 삭제
-        blogRepository.deleteById(id); // ID로 게시글 삭제
+    public void deleteById(Long id) { // 게시글 삭제 메소드
+        if (blogRepository.existsById(id)) { // 게시글이 존재하는지 확인
+            blogRepository.deleteById(id); // ID로 게시글 삭제
+        } else {
+            throw new RuntimeException("게시글이 존재하지 않습니다."); // 예외 처리
+        }
     }
+    public Board save(AddArticleRequest request){
+        // DTO가 없는 경우 이곳에 직접 구현 가능
+        return blogRepository.save(request.toEntity());
+        }
+
+    public Page<Board> findAll(Pageable pageable) {
+        return blogRepository.findAll(pageable);
+            }
+            public Page<Board> searchByKeyword(String keyword, Pageable pageable) {
+            return blogRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+            } // LIKE 검색 제공(대소문자 무시)
+            
 }
