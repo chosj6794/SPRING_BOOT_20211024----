@@ -24,7 +24,7 @@ public class Member {
     private String password;
 
     @Column(name = "age", nullable = false)
-    private String age;
+    private int age;
 
     @Column(name = "mobile", nullable = false)
     private String mobile;
@@ -33,7 +33,7 @@ public class Member {
     private String address;
 
     @Builder // 빌더 패턴 적용
-    public Member(String name, String email, String password, String age, String mobile, String address) {
+    public Member(String name, String email, String password, int age, String mobile, String address) {
         this.name = name;
         this.email = email;
         this.password = password;
