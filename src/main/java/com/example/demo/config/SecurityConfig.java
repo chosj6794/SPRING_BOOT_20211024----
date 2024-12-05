@@ -20,6 +20,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         })
         )
         // .csrf(withDefaults())
+         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session
         .invalidSessionUrl("/session-expired") // 세션 만료시 이동 페이지
         .maximumSessions(1) // 사용자 별 세션 최대 수
